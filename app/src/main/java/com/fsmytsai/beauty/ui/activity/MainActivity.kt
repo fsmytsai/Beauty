@@ -10,7 +10,7 @@ import com.fsmytsai.beauty.service.view.MainView
 import com.fsmytsai.beauty.ui.fragment.HomeFragment
 import kotlinx.android.synthetic.main.fragment_home.*
 
-class MainActivity : BaseActivity<MainPresenter>(), MainView {
+class MainActivity : MVPActivity<MainPresenter>(), MainView {
     private var mIsFirstIn = true
     lateinit var votes: Votes
     var bitmapCount = 0

@@ -8,26 +8,12 @@ import android.support.v4.util.LruCache
 import android.support.v7.app.AlertDialog
 import android.view.ViewGroup
 import com.fsmytsai.beauty.service.app.SharedService
-import com.fsmytsai.beauty.service.presenter.BasePresenter
 
-abstract class BaseActivity<out P : BasePresenter> : AppCompatActivity() {
-    protected val mPresenter: P
-
-    init {
-        mPresenter = this.createPresenter()
-    }
-
-    protected abstract fun createPresenter(): P
-
-    override fun onStop() {
-        super.onStop()
-        mPresenter.onStop()
-    }
+abstract class BaseActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
         mMemoryCaches?.evictAll()
-        mPresenter.onDestroy()
     }
 
     private var mMemoryCaches: LruCache<String, Bitmap>? = null
@@ -43,17 +29,17 @@ abstract class BaseActivity<out P : BasePresenter> : AppCompatActivity() {
         }
     }
 
-    protected fun getBitmapFromLrucache(imageName: String): Bitmap? {
+    fun getBitmapFromLrucache(imageName: String): Bitmap? {
         return mMemoryCaches?.get(imageName)
     }
 
-    protected fun addBitmapToLrucaches(imageName: String, bitmap: Bitmap) {
+    fun addBitmapToLrucaches(imageName: String, bitmap: Bitmap) {
         if (getBitmapFromLrucache(imageName) == null) {
             mMemoryCaches?.put(imageName, bitmap)
         }
     }
 
-    protected fun removeBitmapFromLrucaches(imageName: String) {
+    fun removeBitmapFromLrucaches(imageName: String) {
         if (getBitmapFromLrucache(imageName) == null) {
             mMemoryCaches?.remove(imageName)
         }
