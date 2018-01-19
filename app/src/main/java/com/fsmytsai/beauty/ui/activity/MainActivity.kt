@@ -1,12 +1,15 @@
 package com.fsmytsai.beauty.ui.activity
 
-import android.support.v7.app.AppCompatActivity
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.MenuItem
 import com.fsmytsai.beauty.R
+import com.fsmytsai.beauty.model.Vote
+import com.fsmytsai.beauty.service.presenter.MainPresenter
+import com.fsmytsai.beauty.service.view.MainView
 import com.fsmytsai.beauty.ui.fragment.HomeFragment
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity<MainPresenter>(), MainView {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,4 +30,17 @@ class MainActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
+    override fun createPresenter(): MainPresenter {
+        return MainPresenter(this)
+    }
+
+    override fun onFailure(errorList: ArrayList<String>) {
+        handleErrorMessage(errorList)
+    }
+
+    override fun getVoteDataSuccess(voteData: Vote) {
+    }
+
+    override fun loadImageSuccess(bitmap: Bitmap) {
+    }
 }
