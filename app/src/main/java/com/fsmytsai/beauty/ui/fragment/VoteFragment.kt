@@ -58,17 +58,11 @@ class VoteFragment : BaseFragment() {
 
         val firstDragImageView = DragImageView(mMainActivity)
         mDragImageViewList.add(firstDragImageView)
-
         mDragImageViewList[0].layoutParams = getFirstLayoutParams()
-
         mDragImageViewList[0].adjustViewBounds = true
-
         mDragImageViewList[0].setImageBitmap(mBitmapList[0])
-
         mDragImageViewList[0].setMyDragListener(mMyDragListener)
-
         mDragImageViewList[0].transitionName = "imageTransition"
-
         rlVoteContainer.addView(mDragImageViewList[0])
 
         setEnterSharedElementCallback(object : SharedElementCallback() {
@@ -78,6 +72,7 @@ class VoteFragment : BaseFragment() {
 
                 if (!mIsOpening)
                     return
+
                 mIsOpening = false
                 val secondDragImageView = DragImageView(mMainActivity)
                 mDragImageViewList.add(secondDragImageView)
@@ -89,7 +84,6 @@ class VoteFragment : BaseFragment() {
             }
         })
     }
-
 
     private fun getFirstLayoutParams(): RelativeLayout.LayoutParams {
         val firstLayoutParams = RelativeLayout.LayoutParams((mScreenWidth * 0.8).toInt(), RelativeLayout.LayoutParams.WRAP_CONTENT)
@@ -129,7 +123,6 @@ class VoteFragment : BaseFragment() {
             mBitmapList.removeAt(0)
             rlVoteContainer.removeView(mDragImageViewList[0])
             mDragImageViewList.removeAt(0)
-
             mDragImageViewList[0].transitionName = "imageTransition"
 
             if (mBitmapList.size <= 1)

@@ -42,10 +42,10 @@ class HomeFragment : BaseFragment() {
             val voteFragment = VoteFragment()
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                voteFragment.sharedElementEnterTransition = DetailsTransition()
+                voteFragment.sharedElementEnterTransition = ImageTransition()
 //                voteFragment.enterTransition = Slide()
 //                voteFragment.exitTransition = Slide()
-                voteFragment.sharedElementReturnTransition = DetailsTransition()
+                voteFragment.sharedElementReturnTransition = ImageTransition()
             }
 
             mMainActivity.supportFragmentManager
@@ -58,8 +58,7 @@ class HomeFragment : BaseFragment() {
 
     }
 
-
-    class DetailsTransition : TransitionSet() {
+    private class ImageTransition : TransitionSet() {
         init {
             ordering = ORDERING_TOGETHER
             addTransition(ChangeBounds()).addTransition(ChangeTransform()).addTransition(ChangeImageTransform())
