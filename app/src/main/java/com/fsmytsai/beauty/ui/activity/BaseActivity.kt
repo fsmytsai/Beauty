@@ -59,12 +59,9 @@ abstract class BaseActivity<out P : BasePresenter> : AppCompatActivity() {
         }
     }
 
-    protected fun handleErrorMessage(errorList: ArrayList<String>) {
+    fun handleErrorMessage(errorList: ArrayList<String>) {
         if (errorList.size == 1) {
-            val rootView = findViewById<ViewGroup>(android.R.id.content).getChildAt(0)
-            val snackBar = Snackbar.make(rootView, errorList[0], Snackbar.LENGTH_LONG)
-            SharedService.setSnackbarColor(snackBar, Color.WHITE, Color.RED)
-            snackBar.show()
+            showErrorMessage(errorList[0])
         } else {
             var msg = ""
 
@@ -81,5 +78,12 @@ abstract class BaseActivity<out P : BasePresenter> : AppCompatActivity() {
                     .setPositiveButton("知道了", null)
                     .show()
         }
+    }
+
+    fun showErrorMessage(errorMessage: String) {
+        val rootView = findViewById<ViewGroup>(android.R.id.content).getChildAt(0)
+        val snackBar = Snackbar.make(rootView, errorMessage, Snackbar.LENGTH_LONG)
+        SharedService.setSnackbarColor(snackBar, Color.WHITE, Color.RED)
+        snackBar.show()
     }
 }
