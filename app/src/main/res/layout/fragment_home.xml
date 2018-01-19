@@ -26,16 +26,23 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="投票"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginTop="20dp"
+                    android:text="開始投票"
                     android:textColor="@android:color/black"
                     android:textSize="24sp" />
+
+                <ProgressBar
+                    android:id="@+id/pb_home_load"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp" />
 
                 <ImageView
                     android:id="@+id/iv_home_vote"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:transitionName="imageTransition"
-                    android:adjustViewBounds="true" />
+                    android:adjustViewBounds="true"
+                    android:transitionName="imageTransition" />
             </LinearLayout>
 
             <LinearLayout
