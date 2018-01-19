@@ -7,9 +7,6 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableObserver
 import io.reactivex.schedulers.Schedulers
 
-/**
- * Created by tsaiminyuan on 2017/12/15.
- */
 open class BasePresenter {
     protected val mApiStores = ApiClient.instance.getServer()
     private val mCompositeDisposable = CompositeDisposable()

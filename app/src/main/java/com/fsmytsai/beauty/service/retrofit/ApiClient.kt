@@ -6,9 +6,6 @@ import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 
-/**
- * Created by fsmytsai on 2017/12/15.
- */
 class ApiClient private constructor() {
     private val mRetrofit: Retrofit = Retrofit.Builder()
             .baseUrl("https://laravelcommunity.azurewebsites.net/")

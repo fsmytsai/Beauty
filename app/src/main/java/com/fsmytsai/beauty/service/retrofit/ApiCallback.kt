@@ -5,10 +5,6 @@ import io.reactivex.observers.DisposableObserver
 import retrofit2.HttpException
 import java.net.UnknownHostException
 
-
-/**
- * Created by fsmytsai on 2017/12/17.
- */
 abstract class ApiCallback<M> : DisposableObserver<M>() {
 
     override fun onComplete() {

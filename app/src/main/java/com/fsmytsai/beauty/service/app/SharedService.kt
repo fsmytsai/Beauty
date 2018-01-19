@@ -4,9 +4,6 @@ import android.support.design.widget.Snackbar
 import android.widget.TextView
 import com.fsmytsai.beauty.R
 
-/**
- * Created by fsmytsai on 2018/1/14.
- */
 class SharedService {
     companion object {
 

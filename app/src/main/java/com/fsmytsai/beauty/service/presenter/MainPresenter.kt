@@ -6,14 +6,11 @@ import com.fsmytsai.beauty.service.retrofit.ApiCallback
 import com.fsmytsai.beauty.service.view.MainView
 import okhttp3.ResponseBody
 
-/**
- * Created by fsmytsai on 2017/12/15.
- */
 class MainPresenter(private val mainView: MainView) : BasePresenter() {
 
     fun getVoteData() {
-        addSubscription(mApiStores.getVoteData(), object : ApiCallback<Vote>() {
-            override fun onSuccess(model: Vote) {
+        addSubscription(mApiStores.getVoteData(), object : ApiCallback<ArrayList<Vote>>() {
+            override fun onSuccess(model: ArrayList<Vote>) {
                 mainView.getVoteDataSuccess(model)
             }
 
