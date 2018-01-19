@@ -10,17 +10,17 @@ import com.fsmytsai.beauty.R
 import com.fsmytsai.beauty.ui.activity.MainActivity
 import android.os.Build
 import android.support.transition.*
+import android.support.v4.app.Fragment
 
-class HomeFragment : BaseFragment() {
+class HomeFragment : Fragment() {
     private val mMainActivity: MainActivity  by lazy { activity!! as MainActivity }
     private lateinit var ivMainVote: ImageView
     private var mIsFirstIn = true
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_home, container, false)
-
         initViews(view)
-
+        mMainActivity.getVotes()
         return view
     }
 
@@ -53,7 +53,7 @@ class HomeFragment : BaseFragment() {
                     .addSharedElement(ivMainVote, "imageTransition")
                     .replace(R.id.fl_main_container, voteFragment, "VoteFragment")
                     .addToBackStack(null)
-                    .commit();
+                    .commit()
         }
 
     }
