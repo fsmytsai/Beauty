@@ -1,6 +1,7 @@
 package com.fsmytsai.beauty.service.presenter
 
 import android.graphics.BitmapFactory
+import android.widget.ImageView
 import com.fsmytsai.beauty.model.Votes
 import com.fsmytsai.beauty.service.retrofit.ApiCallback
 import com.fsmytsai.beauty.service.view.MainView
@@ -26,15 +27,19 @@ class MainPresenter(private val mainView: MainView) : BasePresenter() {
         })
     }
 
-    fun loadImage(url: String, imageName: String) {
-        //跳過圖片載入過慢的重複請求及不完全隨機
+    fun loadImage(url: String, imageName: String, imageView: ImageView?) {
+        //跳過圖片載入過慢的重複請求
         if (loadedImageNameList.contains(imageName))
             return
         loadedImageNameList.add(imageName)
         addSubscription(mApiStores.loadImage(url), object : ApiCallback<ResponseBody>() {
             override fun onSuccess(model: ResponseBody) {
                 val bitmap = BitmapFactory.decodeStream(model.byteStream())
-                mainView.loadImageSuccess(bitmap, imageName)
+                loadedImageNameList.remove(imageName)
+                if (imageView != null)
+                    imageView.setImageBitmap(bitmap)
+                else
+                    mainView.loadImageSuccess(bitmap, imageName)
             }
 
             override fun onFailure(errorList: ArrayList<String>) {

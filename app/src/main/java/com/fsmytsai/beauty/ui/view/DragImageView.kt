@@ -12,6 +12,10 @@ import android.view.MotionEvent
 import android.view.animation.Animation
 import android.view.animation.ScaleAnimation
 import android.widget.ImageView
+import android.provider.MediaStore.Images.Media.getBitmap
+import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
+
 
 class DragImageView : ImageView {
     private val mTag = "DragImageView"
@@ -55,6 +59,8 @@ class DragImageView : ImageView {
     override fun onTouchEvent(event: MotionEvent?): Boolean {
         if (mScreenWidth == 0 || mIsAnimating)
             return false
+
+        (drawable as BitmapDrawable).bitmap ?: return false
 
         when (event?.action) {
             MotionEvent.ACTION_DOWN -> {

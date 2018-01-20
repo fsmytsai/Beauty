@@ -14,6 +14,7 @@ import kotlinx.android.synthetic.main.fragment_home.view.*
 
 class HomeFragment : Fragment() {
     private val mMainActivity: MainActivity  by lazy { activity!! as MainActivity }
+    private var isFirstIn = true
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_home, container, false)
@@ -24,10 +25,17 @@ class HomeFragment : Fragment() {
 
     private fun initViews(view: View) {
         val tvToolBar = view.findViewById<TextView>(R.id.tv_toolBar)
-        tvToolBar.text = "Beauty"
+        tvToolBar.text = "BeautyRANK"
         mMainActivity.setSupportActionBar(view.findViewById(R.id.toolbar))
         mMainActivity.supportActionBar?.setDisplayShowTitleEnabled(false)
         mMainActivity.supportActionBar?.setDisplayHomeAsUpEnabled(false)
+
+        if (isFirstIn)
+            isFirstIn = false
+        else {
+            view.iv_home_vote.setImageBitmap(mMainActivity.getBitmap(0))
+            view.pb_home_load.visibility = View.GONE
+        }
 
         view.iv_home_vote.setOnClickListener {
             val voteFragment = VoteFragment()

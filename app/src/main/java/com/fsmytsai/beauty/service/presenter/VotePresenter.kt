@@ -5,7 +5,8 @@ import com.fsmytsai.beauty.service.view.VoteView
 
 class VotePresenter(private val voteView: VoteView) : BasePresenter() {
     fun vote(imageId: Int, featureId: Int, userId: String, isAgree: Boolean) {
-        addSubscription(mApiStores.vote(imageId, featureId, userId, isAgree), object : ApiCallback<String>() {
+        val agree = if (isAgree) 1 else 0
+        addSubscription(mApiStores.vote(imageId, featureId, userId, agree), object : ApiCallback<String>() {
             override fun onSuccess(model: String) {
                 voteView.voteSuccess()
             }

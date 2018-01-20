@@ -19,10 +19,8 @@ abstract class BaseActivity : AppCompatActivity() {
     private var mMemoryCaches: LruCache<String, Bitmap>? = null
 
     protected fun initCache() {
-        val maxMemory = Runtime.getRuntime().maxMemory().toInt() / 1024
-        val maxCache = maxMemory / 3 //使用 1/3 內存
-        mMemoryCaches = object : LruCache<String, Bitmap>(maxCache) {
-
+        val maxMemory = Runtime.getRuntime().maxMemory() / 3
+        mMemoryCaches = object : LruCache<String, Bitmap>(maxMemory.toInt()) {
             override fun sizeOf(key: String?, value: Bitmap?): Int {
                 return value!!.byteCount
             }

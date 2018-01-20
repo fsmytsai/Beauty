@@ -17,5 +17,5 @@ interface ApiStores {
     fun vote(@Field("image_id") imageId: Int,
              @Field("feature_id") featureId: Int,
              @Field("user_id") userId: String,
-             @Field("is_agree") isAgree: Boolean): Observable<String>
+             @Field("is_agree") isAgree: Int): Observable<String>
 }

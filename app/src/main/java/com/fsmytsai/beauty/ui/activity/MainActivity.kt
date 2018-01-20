@@ -14,6 +14,9 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import kotlinx.android.synthetic.main.fragment_home.*
 import android.content.Intent
+import android.util.Log
+import android.view.View
+import android.widget.ImageView
 import com.google.android.gms.common.api.ApiException
 
 class MainActivity : MVPActivity<MainPresenter>(), MainView {
@@ -69,25 +72,33 @@ class MainActivity : MVPActivity<MainPresenter>(), MainView {
     }
 
     override fun getVoteDataSuccess(votes: Votes) {
-        this.votes = votes
-        if (mIsFirstIn && votes.voteList != null)
-            mPresenter.loadImage("${votes.base_url}${votes.voteList[0].image_name}", votes.voteList[0].image_name)
+        if (mIsFirstIn && votes.voteList != null) {
+            this.votes = votes
+            mPresenter.loadImage("${votes.base_url}${votes.voteList[0].image_name}", votes.voteList[0].image_name, null)
+        } else {
+            this.votes.voteList.addAll(votes.voteList)
+        }
     }
 
     override fun loadImageSuccess(bitmap: Bitmap, imageName: String) {
         if (mIsFirstIn && imageName == votes.voteList[0].image_name) {
             mIsFirstIn = false
-
+            pb_home_load.visibility = View.GONE
             iv_home_vote?.setImageBitmap(bitmap)
             loadImages(1, 5)
         }
         bitmapCount++
+        Log.d("testtest", "$bitmapCount")
         addBitmapToLrucaches(imageName, bitmap)
     }
 
     fun loadImages(startIndex: Int, count: Int) {
-        for (i in startIndex..startIndex + count)
-            mPresenter.loadImage("${votes.base_url}${votes.voteList[i].image_name}", votes.voteList[i].image_name)
+        for (i in startIndex until startIndex + count)
+            mPresenter.loadImage("${votes.base_url}${votes.voteList[i].image_name}", votes.voteList[i].image_name, null)
+    }
+
+    fun getMissImage(index: Int, imageView: ImageView) {
+        mPresenter.loadImage("${votes.base_url}${votes.voteList[index].image_name}", votes.voteList[index].image_name, imageView)
     }
 
     fun getBitmap(index: Int): Bitmap? {
@@ -107,9 +118,13 @@ class MainActivity : MVPActivity<MainPresenter>(), MainView {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == GOOGLE_LOGIN_CODE) {
-            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
-            userData = task.getResult(ApiException::class.java)
-            showMessage("${userData?.displayName} 您好!")
+            try {
+                val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+                userData = task.getResult(ApiException::class.java)
+                showMessage("${userData?.displayName} 您好!")
+            } catch (e: ApiException) {
+
+            }
         }
     }
 }
