@@ -10,13 +10,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RelativeLayout
-import android.widget.TextView
 import com.fsmytsai.beauty.R
 import com.fsmytsai.beauty.service.presenter.VotePresenter
 import com.fsmytsai.beauty.service.view.VoteView
 import com.fsmytsai.beauty.ui.activity.MainActivity
 import com.fsmytsai.beauty.ui.view.DragImageView
 import kotlinx.android.synthetic.main.fragment_vote.*
+import kotlinx.android.synthetic.main.fragment_vote.view.*
+import kotlinx.android.synthetic.main.top_section.view.*
 
 class VoteFragment : BaseFragment<VotePresenter>(), VoteView {
 
@@ -32,8 +33,7 @@ class VoteFragment : BaseFragment<VotePresenter>(), VoteView {
     }
 
     private fun initViews(view: View) {
-        val tvToolBar = view.findViewById<TextView>(R.id.tv_toolBar)
-        tvToolBar.text = "Vote"
+        view.tv_toolBar.text = "Vote"
         mMainActivity.setSupportActionBar(view.findViewById(R.id.toolbar))
         mMainActivity.supportActionBar?.setDisplayShowTitleEnabled(false)
         mMainActivity.supportActionBar?.setHomeButtonEnabled(true)
@@ -50,7 +50,7 @@ class VoteFragment : BaseFragment<VotePresenter>(), VoteView {
         mDragImageViewList[0].setImageBitmap(getCompleteBitmap(0))
         mDragImageViewList[0].setMyDragListener(mMyDragListener)
         mDragImageViewList[0].transitionName = "imageTransition"
-        rl_vote_container.addView(mDragImageViewList[0])
+        view.rl_vote_container.addView(mDragImageViewList[0])
 
         setEnterSharedElementCallback(object : SharedElementCallback() {
 
@@ -67,7 +67,7 @@ class VoteFragment : BaseFragment<VotePresenter>(), VoteView {
                 mDragImageViewList[1].adjustViewBounds = true
                 mDragImageViewList[1].setImageBitmap(getCompleteBitmap(1))
                 mDragImageViewList[1].setMyDragListener(mMyDragListener)
-                rl_vote_container.addView(mDragImageViewList[1], 0)
+                view.rl_vote_container.addView(mDragImageViewList[1], 0)
             }
         })
     }
@@ -121,7 +121,7 @@ class VoteFragment : BaseFragment<VotePresenter>(), VoteView {
             if (mMainActivity.bitmapCount < 5)
                 mMainActivity.loadImages(5, 10)
 
-            mMainActivity.rl_vote_container.removeView(mDragImageViewList[0])
+            rl_vote_container.removeView(mDragImageViewList[0])
             mDragImageViewList.removeAt(0)
             mDragImageViewList[0].transitionName = "imageTransition"
 

@@ -70,7 +70,7 @@ class MainActivity : MVPActivity<MainPresenter>(), MainView {
 
     override fun getVoteDataSuccess(votes: Votes) {
         this.votes = votes
-        if (mIsFirstIn)
+        if (mIsFirstIn && votes.voteList != null)
             mPresenter.loadImage("${votes.base_url}${votes.voteList[0].image_name}", votes.voteList[0].image_name)
     }
 

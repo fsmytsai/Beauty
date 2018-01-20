@@ -10,7 +10,7 @@ import com.fsmytsai.beauty.ui.activity.MainActivity
 import android.os.Build
 import android.support.transition.*
 import android.support.v4.app.Fragment
-import kotlinx.android.synthetic.main.fragment_home.*
+import kotlinx.android.synthetic.main.fragment_home.view.*
 
 class HomeFragment : Fragment() {
     private val mMainActivity: MainActivity  by lazy { activity!! as MainActivity }
@@ -29,7 +29,7 @@ class HomeFragment : Fragment() {
         mMainActivity.supportActionBar?.setDisplayShowTitleEnabled(false)
         mMainActivity.supportActionBar?.setDisplayHomeAsUpEnabled(false)
 
-        iv_home_vote.setOnClickListener {
+        view.iv_home_vote.setOnClickListener {
             val voteFragment = VoteFragment()
 
             if (mMainActivity.userData != null) {
@@ -42,7 +42,7 @@ class HomeFragment : Fragment() {
 
                 mMainActivity.supportFragmentManager
                         .beginTransaction()
-                        .addSharedElement(iv_home_vote, "imageTransition")
+                        .addSharedElement(view.iv_home_vote, "imageTransition")
                         .replace(R.id.fl_main_container, voteFragment, "VoteFragment")
                         .addToBackStack(null)
                         .commit()
