@@ -8,16 +8,36 @@ import com.fsmytsai.beauty.model.Votes
 import com.fsmytsai.beauty.service.presenter.MainPresenter
 import com.fsmytsai.beauty.service.view.MainView
 import com.fsmytsai.beauty.ui.fragment.HomeFragment
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import kotlinx.android.synthetic.main.fragment_home.*
+import android.content.Intent
+import com.google.android.gms.common.api.ApiException
 
 class MainActivity : MVPActivity<MainPresenter>(), MainView {
+    private lateinit var mGoogleSignInClient: GoogleSignInClient
+    var userData: GoogleSignInAccount? = null
     private var mIsFirstIn = true
     lateinit var votes: Votes
     var bitmapCount = 0
+    private val GOOGLE_LOGIN_CODE = 80
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).build()
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
+        userData = GoogleSignIn.getLastSignedInAccount(this)
+
+        val userName = when (userData) {
+            null -> "遊客"
+            else -> userData!!.displayName
+        }
+
+        showMessage("$userName 您好!")
 
         supportFragmentManager
                 .beginTransaction()
@@ -58,7 +78,6 @@ class MainActivity : MVPActivity<MainPresenter>(), MainView {
         if (mIsFirstIn && imageName == votes.voteList[0].image_name) {
             mIsFirstIn = false
 
-
             iv_home_vote?.setImageBitmap(bitmap)
             loadImages(1, 5)
         }
@@ -77,5 +96,20 @@ class MainActivity : MVPActivity<MainPresenter>(), MainView {
 
     fun removeFirstBitmap() {
         removeBitmapFromLrucaches(votes.voteList[0].image_name)
+    }
+
+    fun login() {
+        val signInIntent = mGoogleSignInClient.signInIntent
+        startActivityForResult(signInIntent, GOOGLE_LOGIN_CODE)
+    }
+
+    public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == GOOGLE_LOGIN_CODE) {
+            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+            userData = task.getResult(ApiException::class.java)
+            showMessage("${userData?.displayName} 您好!")
+        }
     }
 }
