@@ -97,7 +97,11 @@ class VoteFragment : BaseFragment<VotePresenter>(), VoteView {
         }
 
         override fun finish(isAgree: Boolean) {
-            mPresenter.vote(1, 1, "123444", isAgree)
+            mPresenter.vote(mMainActivity.votes.voteList[0].image_id,
+                    mMainActivity.votes.voteList[0].feature_id,
+                    mMainActivity.userData!!.id!!,
+                    isAgree)
+
             if (isAgree)
                 iv_vote_agree.setImageResource(R.drawable.yes)
             else
