@@ -66,6 +66,13 @@ abstract class BaseActivity : AppCompatActivity() {
         }
     }
 
+    fun showMessage(message: String) {
+        val rootView = findViewById<ViewGroup>(android.R.id.content).getChildAt(0)
+        val snackBar = Snackbar.make(rootView, message, Snackbar.LENGTH_LONG)
+        SharedService.setSnackbarColor(snackBar, Color.WHITE, Color.BLUE)
+        snackBar.show()
+    }
+
     fun showErrorMessage(errorMessage: String) {
         val rootView = findViewById<ViewGroup>(android.R.id.content).getChildAt(0)
         val snackBar = Snackbar.make(rootView, errorMessage, Snackbar.LENGTH_LONG)
