@@ -81,7 +81,7 @@ class DragImageView : ImageView {
                 when {
                     centerX < mScreenWidth / 3.3 -> {
                         //左滑
-                        mMyDragListener?.finish(true)
+                        mMyDragListener?.finish(false)
                         animate().translationX(-width.toFloat())
                                 .setDuration(300)
                                 .setListener(object : AnimatorListenerAdapter() {
@@ -91,11 +91,10 @@ class DragImageView : ImageView {
                                         mMyDragListener?.finished()
                                     }
                                 })
-
                     }
                     centerX > mScreenWidth - mScreenWidth / 3.3 -> {
                         //右滑
-                        mMyDragListener?.finish(false)
+                        mMyDragListener?.finish(true)
                         animate().translationX(width.toFloat())
                                 .setDuration(300)
                                 .setListener(object : AnimatorListenerAdapter() {
