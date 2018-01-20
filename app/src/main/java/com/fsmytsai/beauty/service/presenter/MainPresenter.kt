@@ -27,6 +27,7 @@ class MainPresenter(private val mainView: MainView) : BasePresenter() {
     }
 
     fun loadImage(url: String, imageName: String) {
+        //跳過圖片載入過慢的重複請求及不完全隨機
         if (loadedImageNameList.contains(imageName))
             return
         loadedImageNameList.add(imageName)

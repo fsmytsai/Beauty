@@ -8,7 +8,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class ApiClient private constructor() {
     private val mRetrofit: Retrofit = Retrofit.Builder()
-            .baseUrl("https://laravelcommunity.azurewebsites.net/")
+            .baseUrl("http://beauty.southeastasia.cloudapp.azure.com/")
             .client(OkHttpClient())
             .addConverterFactory(GsonConverterFactory.create(GsonBuilder().create()))
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
