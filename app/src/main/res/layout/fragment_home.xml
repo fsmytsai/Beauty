@@ -41,8 +41,7 @@
                     android:id="@+id/iv_home_vote"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:adjustViewBounds="true"
-                    android:transitionName="imageTransition" />
+                    android:adjustViewBounds="true" />
             </LinearLayout>
 
             <LinearLayout
@@ -50,7 +49,6 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:orientation="vertical">
-
 
             </LinearLayout>
         </LinearLayout>
