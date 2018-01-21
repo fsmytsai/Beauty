@@ -17,6 +17,7 @@ import android.content.Intent
 import android.util.Log
 import android.view.View
 import android.widget.ImageView
+import com.fsmytsai.beauty.ui.fragment.VoteFragment
 import com.google.android.gms.common.api.ApiException
 
 class MainActivity : MVPActivity<MainPresenter>(), MainView {
@@ -88,7 +89,6 @@ class MainActivity : MVPActivity<MainPresenter>(), MainView {
             loadImages(1, 5)
         }
         bitmapCount++
-        Log.d("testtest", "$bitmapCount")
         addBitmapToLrucaches(imageName, bitmap)
     }
 
@@ -123,8 +123,17 @@ class MainActivity : MVPActivity<MainPresenter>(), MainView {
                 userData = task.getResult(ApiException::class.java)
                 showMessage("${userData?.displayName} 您好!")
             } catch (e: ApiException) {
-
+                showErrorMessage("登入失敗")
+                Log.e("BeautyRANK", e.message)
             }
         }
+    }
+
+    override fun onBackPressed() {
+        val voteFragment = supportFragmentManager.findFragmentByTag("VoteFragment")
+        if (voteFragment != null)
+            (voteFragment as VoteFragment).dragImageViewList[1].visibility = View.GONE
+
+        super.onBackPressed()
     }
 }

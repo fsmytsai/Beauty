@@ -1,5 +1,6 @@
 package com.fsmytsai.beauty.ui.fragment
 
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,7 +8,6 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.fsmytsai.beauty.R
 import com.fsmytsai.beauty.ui.activity.MainActivity
-import android.os.Build
 import android.support.transition.*
 import android.support.v4.app.Fragment
 import kotlinx.android.synthetic.main.fragment_home.view.*
@@ -19,7 +19,6 @@ class HomeFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_home, container, false)
         initViews(view)
-        mMainActivity.getVotes()
         return view
     }
 
@@ -30,23 +29,25 @@ class HomeFragment : Fragment() {
         mMainActivity.supportActionBar?.setDisplayShowTitleEnabled(false)
         mMainActivity.supportActionBar?.setDisplayHomeAsUpEnabled(false)
 
-        if (isFirstIn)
+        if (isFirstIn) {
             isFirstIn = false
-        else {
+            mMainActivity.getVotes()
+        } else {
             view.iv_home_vote.setImageBitmap(mMainActivity.getBitmap(0))
             view.pb_home_load.visibility = View.GONE
         }
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            view.iv_home_vote.transitionName = "imageTransition"
+        }
         view.iv_home_vote.setOnClickListener {
             val voteFragment = VoteFragment()
 
             if (mMainActivity.userData != null) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    voteFragment.sharedElementEnterTransition = ImageTransition()
-//                voteFragment.enterTransition = Slide()
-//                voteFragment.exitTransition = Slide()
-                    voteFragment.sharedElementReturnTransition = ImageTransition()
-                }
+                voteFragment.sharedElementEnterTransition = ImageTransition()
+                voteFragment.enterTransition = Explode()
+                voteFragment.exitTransition = Explode()
+                voteFragment.sharedElementReturnTransition = ImageTransition()
 
                 mMainActivity.supportFragmentManager
                         .beginTransaction()

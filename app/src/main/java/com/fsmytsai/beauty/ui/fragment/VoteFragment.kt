@@ -3,6 +3,8 @@ package com.fsmytsai.beauty.ui.fragment
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.graphics.Bitmap
+import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.SharedElementCallback
 import android.util.DisplayMetrics
@@ -24,7 +26,7 @@ import kotlinx.android.synthetic.main.top_section.view.*
 class VoteFragment : BaseFragment<VotePresenter>(), VoteView {
 
     private val mMainActivity: MainActivity  by lazy { activity!! as MainActivity }
-    private val mDragImageViewList = ArrayList<DragImageView>()
+    val dragImageViewList = ArrayList<DragImageView>()
     private var mIsOpening = true
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -44,17 +46,20 @@ class VoteFragment : BaseFragment<VotePresenter>(), VoteView {
         mMainActivity.windowManager.defaultDisplay.getMetrics(dm)
 
         val firstDragImageView = DragImageView(mMainActivity)
-        mDragImageViewList.add(firstDragImageView)
+        dragImageViewList.add(firstDragImageView)
 
         val firstLayoutParams = RelativeLayout.LayoutParams((dm.widthPixels * 0.8).toInt(), (dm.heightPixels * 0.6).toInt())
         firstLayoutParams.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE)
 
-        mDragImageViewList[0].layoutParams = firstLayoutParams
-        mDragImageViewList[0].adjustViewBounds = true
-        mDragImageViewList[0].setImageBitmap(getCompleteBitmap(0, mDragImageViewList[0]))
-        mDragImageViewList[0].setMyDragListener(mMyDragListener)
-        mDragImageViewList[0].transitionName = "imageTransition"
-        view.rl_vote_container.addView(mDragImageViewList[0])
+        dragImageViewList[0].layoutParams = firstLayoutParams
+        dragImageViewList[0].adjustViewBounds = true
+        dragImageViewList[0].setBackgroundColor(Color.WHITE)
+        dragImageViewList[0].setImageBitmap(getCompleteBitmap(0, dragImageViewList[0]))
+        dragImageViewList[0].setMyDragListener(mMyDragListener)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            dragImageViewList[0].transitionName = "imageTransition"
+        }
+        view.rl_vote_container.addView(dragImageViewList[0])
 
         view.tv_vote_topic.text = mMainActivity.votes.voteList[0].topic
 
@@ -70,12 +75,13 @@ class VoteFragment : BaseFragment<VotePresenter>(), VoteView {
 
                 view.rl_vote_container.post {
                     val secondDragImageView = DragImageView(mMainActivity)
-                    mDragImageViewList.add(secondDragImageView)
-                    mDragImageViewList[1].layoutParams = getSecondLayoutParams()
-                    mDragImageViewList[1].adjustViewBounds = true
-                    mDragImageViewList[1].setImageBitmap(getCompleteBitmap(1, mDragImageViewList[1]))
-                    mDragImageViewList[1].setMyDragListener(mMyDragListener)
-                    view.rl_vote_container.addView(mDragImageViewList[1], 0)
+                    dragImageViewList.add(secondDragImageView)
+                    dragImageViewList[1].layoutParams = getSecondLayoutParams()
+                    dragImageViewList[1].adjustViewBounds = true
+                    dragImageViewList[1].setBackgroundColor(Color.WHITE)
+                    dragImageViewList[1].setImageBitmap(getCompleteBitmap(1, dragImageViewList[1]))
+                    dragImageViewList[1].setMyDragListener(mMyDragListener)
+                    view.rl_vote_container.addView(dragImageViewList[1], 0)
                 }
 
             }
@@ -113,51 +119,45 @@ class VoteFragment : BaseFragment<VotePresenter>(), VoteView {
 
             showAgree()
 
-            if (mDragImageViewList.size <= 1)
+            if (dragImageViewList.size <= 1)
                 return
 
-            mDragImageViewList[1].scaleTo(2f)
+            dragImageViewList[1].scaleTo(2f)
         }
 
         override fun finished() {
             mMainActivity.bitmapCount--
-            Log.d("testtest", "${mMainActivity.bitmapCount}")
             mMainActivity.removeFirstBitmap()
             if (mMainActivity.bitmapCount < 5)
                 mMainActivity.loadImages(4, 5)
 
-            rl_vote_container.removeView(mDragImageViewList[0])
+            rl_vote_container.removeView(dragImageViewList[0])
             mMainActivity.votes.voteList.removeAt(0)
             tv_vote_topic.text = mMainActivity.votes.voteList[0].topic
-            mDragImageViewList.removeAt(0)
-            mDragImageViewList[0].transitionName = "imageTransition"
-            Log.d("testtest votes", "${mMainActivity.votes.voteList.size}")
+            dragImageViewList.removeAt(0)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                dragImageViewList[0].transitionName = "imageTransition"
+            }
 
             if (mMainActivity.votes.voteList.size < 25)
                 mMainActivity.getVotes()
 
             val dragImageView = DragImageView(mMainActivity)
-            mDragImageViewList.add(dragImageView)
+            dragImageViewList.add(dragImageView)
 
-            mDragImageViewList[1].layoutParams = getSecondLayoutParams()
-            mDragImageViewList[1].adjustViewBounds = true
-            mDragImageViewList[1].setImageBitmap(getCompleteBitmap(1, mDragImageViewList[1]))
-            mDragImageViewList[1].setMyDragListener(this)
-            rl_vote_container.addView(mDragImageViewList[1], 0)
+            dragImageViewList[1].layoutParams = getSecondLayoutParams()
+            dragImageViewList[1].adjustViewBounds = true
+            dragImageViewList[1].setBackgroundColor(Color.WHITE)
+            dragImageViewList[1].setImageBitmap(getCompleteBitmap(1, dragImageViewList[1]))
+            dragImageViewList[1].setMyDragListener(this)
+            rl_vote_container.addView(dragImageViewList[1], 0)
         }
     }
 
     private fun getCompleteBitmap(index: Int, imageView: ImageView): Bitmap? {
         val bitmap = mMainActivity.getBitmap(index)
         if (bitmap == null) {
-            Log.d("testtest", "Image null")
-//            if (mMainActivity.votes.voteList.size > index) {
-//                mMainActivity.votes.voteList.removeAt(index)
-//                bitmap = mMainActivity.getBitmap(index)
-//            } else {
-//                mMainActivity.showErrorMessage("取得圖片失敗")
-//                break
-//            }
+            Log.d("Beauty", "Image null")
             mMainActivity.getMissImage(index, imageView)
         }
         return bitmap
