@@ -17,14 +17,19 @@ import android.content.Intent
 import android.util.Log
 import android.view.View
 import android.widget.ImageView
+import com.fsmytsai.beauty.model.Rank
 import com.fsmytsai.beauty.ui.fragment.VoteFragment
 import com.google.android.gms.common.api.ApiException
 
 class MainActivity : MVPActivity<MainPresenter>(), MainView {
+
     private lateinit var mGoogleSignInClient: GoogleSignInClient
     var userData: GoogleSignInAccount? = null
     private var mIsFirstIn = true
+    private var mIsFirstRank = true
+    lateinit var firstRankBitmap: Bitmap
     lateinit var votes: Votes
+    lateinit var rank: Rank
     var bitmapCount = 0
     private val GOOGLE_LOGIN_CODE = 80
 
@@ -62,6 +67,7 @@ class MainActivity : MVPActivity<MainPresenter>(), MainView {
 
     fun getVotes() {
         mPresenter.getVotes()
+        mPresenter.getRank()
     }
 
     override fun createPresenter(): MainPresenter {
@@ -81,12 +87,23 @@ class MainActivity : MVPActivity<MainPresenter>(), MainView {
         }
     }
 
+    override fun getRankDataSuccess(rank: Rank) {
+        this.rank = rank
+        mPresenter.loadFirstRankImage("${this.rank.base_url}${this.rank.images.feature_1[0].image_name}")
+    }
+
     override fun loadImageSuccess(bitmap: Bitmap, imageName: String) {
         if (mIsFirstIn && imageName == votes.voteList[0].image_name) {
             mIsFirstIn = false
             pb_home_load.visibility = View.GONE
             iv_home_vote?.setImageBitmap(bitmap)
             loadImages(1, 5)
+        }
+        if (imageName == "firstRankImage") {
+            mIsFirstRank = false
+            pb_home_rank.visibility = View.GONE
+            firstRankBitmap = bitmap
+            iv_home_rank?.setImageBitmap(bitmap)
         }
         bitmapCount++
         addBitmapToLrucaches(imageName, bitmap)
@@ -131,8 +148,9 @@ class MainActivity : MVPActivity<MainPresenter>(), MainView {
 
     override fun onBackPressed() {
         val voteFragment = supportFragmentManager.findFragmentByTag("VoteFragment")
-        if (voteFragment != null)
+        if (voteFragment != null){
             (voteFragment as VoteFragment).dragImageViewList[1].visibility = View.GONE
+        }
 
         super.onBackPressed()
     }
